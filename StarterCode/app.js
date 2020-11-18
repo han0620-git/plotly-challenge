@@ -62,3 +62,64 @@ function optionChanged(selected_id) {
 
     Plotly.newPlot("bar", data, bar_layout);
 
+// Create a bubble chart that displays each sample.
+    // * Use`otu_ids` for the x values.
+    // * Use`sample_values` for the y values.
+    // * Use`sample_values` for the marker size.
+    // * Use`otu_ids` for the marker colors.
+    // * Use`otu_labels` for the text values.
+
+    var results = samples.filter(sampleObj => sampleObj.id == selected_id);
+    var result = results[0];
+
+    var otu_ids = result.otu_ids;
+    var otu_labels = result.otu_labels;
+    var sample_values = result.sample_values;
+
+    var bubble_trace = {
+      x: otu_ids,
+      y: sample_values,
+      text: otu_labels,
+      mode: "markers",
+      marker: {
+        size: sample_values,
+        color: otu_ids,
+        colorscale: "Earth"
+      }
+    };
+
+    var data = [bubble_trace];
+
+    var bubble_layout = {
+      hovermode: "closest",
+      xaxis: { title: "OTU ID" },
+      margin: { t: 30 }
+    };
+
+    Plotly.newPlot("bubble", data, bubble_layout);
+  });
+  //====================================================
+
+  // Demorgrphic info
+  d3.json("samples.json").then((data) => {
+    var metadata = data.metadata;
+
+    console.log("metadata");
+    console.log(metadata);
+
+    var results = metadata.filter(metadataObj => metadataObj.id == selected_id);
+    var result = results[0];
+
+    console.log("metadata")
+    console.log(metadata)
+
+    var fig = d3.select("#sample-metadata");
+
+    fig.html("");
+
+    Object.entries(result).forEach(([key, value]) => {
+      fig.append("h5").text(`${key}: ${value}`);
+    });
+
+  });
+}
