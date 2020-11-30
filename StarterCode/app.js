@@ -62,7 +62,9 @@ function optionChanged(selected_id) {
 
     Plotly.newPlot("bar", data, bar_layout);
 
-// Create a bubble chart that displays each sample.
+    //==================================================
+
+    // Create a bubble chart that displays each sample.
     // * Use`otu_ids` for the x values.
     // * Use`sample_values` for the y values.
     // * Use`sample_values` for the marker size.
